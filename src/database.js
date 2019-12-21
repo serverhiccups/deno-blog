@@ -13,13 +13,13 @@ class DatabaseHelper {
 	}
 
 	init() {
-		this.ensureDatabase();
 		this.readDatabase();
 	}
 
-	ensureDatabase() {
-		if(!existsSync('./deno-blog-database.json')) {
-			writeJsonSync('./deno-blog-database.json', {
+	createDatabase() {
+		if(!existsSync('./deno-blog/deno-blog-database.json')) {
+			ensureFileSync("./deno-blog/deno-blog-database.json");
+			writeJsonSync('./deno-blog/deno-blog-database.json', {
 				highestId: 0,
 				posts: [],
 				config: {}
@@ -29,11 +29,11 @@ class DatabaseHelper {
 	}
 
 	readDatabase() {
-		this.database = readJsonSync('./deno-blog-database.json');
+		this.database = readJsonSync('./deno-blog/deno-blog-database.json');
 	}
 
 	writeDatabase() {
-		writeJsonSync('./deno-blog-database.json', this.database);
+		writeJsonSync('./deno-blog/deno-blog-database.json', this.database);
 	}
 
 	lookupPostById(id) { // Shitty algorithm for a shitty project.
@@ -68,6 +68,10 @@ class DatabaseHelper {
 
 	deletePost(id) {
 		this.database.posts.splice(this.lookupPostById(id), 1);
+	}
+
+	inDenoBlogPath() {
+		return existsSync("./deno-blog/deno-blog-database.json");	
 	}
 }
 

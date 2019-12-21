@@ -4,11 +4,18 @@ import { generatePost, generateIndex } from "./src/generate.js";
 const { args } = Deno;
 let command = args;
 let database = new DatabaseHelper();
-database.init();
 
 /* Constants */
 const OUTPUT_DIRECTORY = Deno.cwd() + '/blog/';
 /* Constants */
+
+function checkInPathAndInit() {
+	if(!database.inDenoBlogPath()) {
+		console.log("We are not currently running in a directory with a deno-blog directory. Have you initialised your database?");
+		Deno.exit(1);
+	}
+	database.init();
+}
 
 function newPost(commandArgs) {
 	database.addPost(commandArgs[2]);
@@ -41,16 +48,23 @@ function generate(commandArgs) {
 
 switch(command[1]) {
 	case 'add':
+		checkInPathAndInit();
 		newPost(command);
 		break;
 	case 'list':
+		checkInPathAndInit();
 		showPosts();
 		break;
 	case 'delete':
+		checkInPathAndInit();
 		deletePost(command);
 		break;
 	case 'generate':
+		checkInPathAndInit();
 		generate(command);
+		break;
+	case 'init':
+		database.createDatabase();
 		break;
 	default:
 		console.log("deno-blog pre-alpha v0.0.1"); // TODO: Add more documentation
