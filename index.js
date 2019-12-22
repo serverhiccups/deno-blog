@@ -1,3 +1,4 @@
+#!/usr/bin/env deno
 // Copyright serverhiccups 2020
 import { DatabaseHelper } from "./src/database.js";
 import { generatePost, generateIndex } from "./src/generate.js";
