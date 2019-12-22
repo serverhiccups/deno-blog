@@ -73,6 +73,18 @@ class DatabaseHelper {
 	inDenoBlogPath() {
 		return existsSync("./deno-blog/deno-blog-database.json");	
 	}
+
+	getConfig(option) {
+		return this.database.config[option];
+	}
+
+	setConfig(option, value) {
+		let configOptions = ["useTemplates"];
+		if(!configOptions.includes(option)) console.log(`Invalid option ${option}`);
+		if(value == "true") value = true;
+		if(value == "false") value = false;
+		this.database.config[option] = value;
+	}
 }
 
 export { DatabaseHelper };

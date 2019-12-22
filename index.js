@@ -40,10 +40,28 @@ function deletePost(commandArgs) {
 function generate(commandArgs) {
 	let templatePath = commandArgs[2];
 	for (let post of database.getAllPosts()) {
-		generatePost(post, OUTPUT_DIRECTORY + post.normalisedTitle + '.' + post.id + '.html', "./deno-blog/templates.js");
-	}
-	generateIndex(database.getAllPosts(), OUTPUT_DIRECTORY + 'index.html', "./deno-blog/templates.js")
+		if(database.getConfig("useTemplates")) {
+			generatePost(post, OUTPUT_DIRECTORY + post.normalisedTitle + '.' + post.id + '.html', "./deno-blog/templates.js");
+		} else {
 
+			generatePost(post, OUTPUT_DIRECTORY + post.normalisedTitle + '.' + post.id + '.html');
+		}
+	}
+	if(database.getConfig("useTemplates")) {
+		generateIndex(database.getAllPosts(), OUTPUT_DIRECTORY + 'index.html', "./deno-blog/templates.js");
+	} else {
+		generateIndex(database.getAllPosts(), OUTPUT_DIRECTORY + 'index.html');
+	}
+
+}
+
+function config(commandArgs) {
+	if(commandArgs[3] == undefined) {
+		console.log(database.getConfig(commandArgs[2]));
+	} else {
+		database.setConfig(commandArgs[2], commandArgs[3]);
+		database.writeDatabase();
+	}
 }
 
 switch(command[1]) {
@@ -63,6 +81,9 @@ switch(command[1]) {
 		checkInPathAndInit();
 		generate(command);
 		break;
+	case 'config':
+		checkInPathAndInit();
+		config(command);
 	case 'init':
 		database.createDatabase();
 		break;
