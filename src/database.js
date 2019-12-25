@@ -1,3 +1,4 @@
+// Copyright serverhiccups 2020
 import {existsSync, readJsonSync, writeJsonSync, ensureDirSync, ensureFileSync } from "https://deno.land/std/fs/mod.ts";
 
 function pad(string, length = 2, padChar = '0') {

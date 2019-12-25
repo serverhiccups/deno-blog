@@ -1,3 +1,4 @@
+// Copyright serverhiccups 2020.
 import { Remarkable } from 'https://cdn.pika.dev/remarkable/^2.0.0';
 import { ensureFileSync, ensureDirSync, readFileStrSync, writeFileStrSync } from "https://deno.land/std/fs/mod.ts";
 
