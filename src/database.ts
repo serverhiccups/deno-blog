@@ -18,7 +18,7 @@ interface Database {
 function pad(val: string | number, length: number = 2, padChar: string = '0') {
 	if(typeof val === "number") val = val.toString();
 	while (val.length < length) {
-		val += padChar;
+		val = padChar + val;
 	}
 	return val;
 }
@@ -74,7 +74,7 @@ class DatabaseHelper {
 		this.database.highestId += 1;
 		let path = `./deno-blog/posts/${id}.md`;
 		let time = new Date();
-		let normalisedTitle = title.toLowerCase().replace(/ /gi, "-");
+		let normalisedTitle = title.replace(/[^a-z0-9]/gi, "-").toLowerCase();
 		ensureFileSync(path);
 		let post = {
 			id: id,
@@ -84,6 +84,7 @@ class DatabaseHelper {
 			dateString: (`${time.getFullYear()}-${pad(time.getMonth() + 1)}-${pad(time.getDate())}`)
 		}
 		this.database.posts.push(post);
+		console.log(`Your new post is located in ${path}.`);
 	}
 
 	getAllPosts() {

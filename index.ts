@@ -40,9 +40,9 @@ function deletePost(commandArgs: any) {
 function generate() {
 	for (let post of database.getAllPosts()) {
 		if(database.getConfig("useTemplates")) {
-			generatePost(post, OUTPUT_DIRECTORY + "/blog/" + post.normalisedTitle + '.' + post.id + '.html', Deno.cwd() + "/deno-blog/post.ejs");
+			generatePost(post, OUTPUT_DIRECTORY + "/blog/" + post.normalisedTitle + '.html', Deno.cwd() + "/deno-blog/post.ejs");
 		} else {
-			generatePost(post, OUTPUT_DIRECTORY + "/blog/" + post.normalisedTitle + '.' + post.id + '.html');
+			generatePost(post, OUTPUT_DIRECTORY + "/blog/" + post.normalisedTitle + '.html');
 		}
 	}
 	if(database.getConfig("useTemplates")) {
@@ -61,8 +61,6 @@ function config(commandArgs: any) {
 		database.writeDatabase();
 	}
 }
-
-console.log("got to switch")
 
 switch(command[0]) {
 	case 'add':

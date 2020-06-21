@@ -25,11 +25,11 @@ async function generatePost(post: Post, outputPath: string, templatePath: string
 		})
 	} else {
 		outputhtml = await dejs.renderFileToString(templatePath, {
-			post: post,
+		post: post,
 			content: posthtml
 		})
 	}
-	console.log(`outputPath is ${outputPath}`);
+	console.log(`Generated ${outputPath}`);
 	ensureFileSync(outputPath);
 	writeFileStrSync(outputPath, outputhtml);
 }
@@ -51,10 +51,11 @@ async function generateIndex(posts: Post[], outputPath: string, templatePath: st
 			posts: posts,
 		})
 	} else {
-		outputhtml = await dejs.renderFileToString(templatePath, {
+		outputhtml = await dejs.renderToString(readFileStrSync(templatePath, { encoding: "utf8"}), {
 			posts: posts,
 		})
 	}
+	console.log(`Generated ${outputPath}`)
 	ensureFileSync(outputPath);
 	writeFileStrSync(outputPath, outputhtml);
 }
