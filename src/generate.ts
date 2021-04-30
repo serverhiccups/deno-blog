@@ -1,12 +1,12 @@
 // Copyright serverhiccups 2020.
-import { Remarkable } from 'https://cdn.jsdelivr.net/npm/remarkable@2.0.1/dist/esm/index.browser.js';
-import { ensureFileSync, ensureDirSync, readFileStrSync, writeFileStrSync } from "https://deno.land/std/fs/mod.ts";
+import { Remarkable } from 'https://cdn.skypack.dev/remarkable';
+import { ensureFileSync } from "https://deno.land/std@0.95.0/fs/mod.ts";
 import { Post } from "./database.ts";
-import * as dejs from 'https://deno.land/x/dejs@0.7.0/mod.ts';
+import * as dejs from 'https://deno.land/x/dejs@0.9.3/mod.ts';
 
 async function generatePost(post: Post, outputPath: string, templatePath: string | undefined = undefined) {
 	let md = new Remarkable();
-	let postmd: string = readFileStrSync(post.path);
+	let postmd: string = Deno.readTextFileSync(post.path);
 	let posthtml = md.render(postmd);
 	let outputhtml: string;
 	if(templatePath == undefined) {
@@ -31,7 +31,7 @@ async function generatePost(post: Post, outputPath: string, templatePath: string
 	}
 	console.log(`Generated ${outputPath}`);
 	ensureFileSync(outputPath);
-	writeFileStrSync(outputPath, outputhtml);
+	Deno.writeTextFileSync(outputPath, outputhtml);
 }
 
 async function generateIndex(posts: Post[], outputPath: string, templatePath: string | undefined = undefined) {
@@ -51,13 +51,13 @@ async function generateIndex(posts: Post[], outputPath: string, templatePath: st
 			posts: posts,
 		})
 	} else {
-		outputhtml = await dejs.renderToString(readFileStrSync(templatePath, { encoding: "utf8"}), {
+		outputhtml = await dejs.renderToString(Deno.readTextFileSync(templatePath), {
 			posts: posts,
 		})
 	}
 	console.log(`Generated ${outputPath}`)
 	ensureFileSync(outputPath);
-	writeFileStrSync(outputPath, outputhtml);
+	Deno.writeTextFileSync(outputPath, outputhtml);
 }
 
 export { generatePost, generateIndex };

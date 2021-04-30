@@ -1,5 +1,13 @@
 // Copyright serverhiccups 2020
-import { existsSync, readJsonSync, writeJsonSync, ensureDirSync, ensureFileSync } from "https://deno.land/std@v0.56.0/fs/mod.ts";
+import { existsSync, ensureDirSync, ensureFileSync } from "https://deno.land/std@0.95.0/fs/mod.ts";
+
+function readJsonSync(path: string) {
+	return JSON.parse(Deno.readTextFileSync(path))
+}
+
+function writeJsonSync(path: string, payload: unknown) {
+	Deno.writeTextFileSync(path, JSON.stringify(payload));
+}
 
 interface Post {
 	id: number;
@@ -113,4 +121,5 @@ class DatabaseHelper {
 	}
 }
 
-export { Database, Post, DatabaseHelper };
+export { DatabaseHelper };
+export type { Database, Post};
